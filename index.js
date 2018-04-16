@@ -1,6 +1,7 @@
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
+	Modified by Patrick Hübl-Neschkudla @flipace
 */
 var loaderUtils = require("loader-utils");
 
@@ -21,16 +22,16 @@ module.exports.pitch = function(remainingRequest) {
 	var result;
 	if(query.lazy) {
 		result = [
-			"module.exports = function(cb) {\n",
+			"module.exports = function(cb, errorCb) {\n",
 			"	require.ensure([], function(require) {\n",
 			"		cb(require(", loaderUtils.stringifyRequest(this, "!!" + remainingRequest), "));\n",
-			"	}" + chunkNameParam + ");\n",
+			"	}, function(err) { errorCb(err); }" + chunkNameParam + ");\n",
 			"}"];
 	} else {
 		result = [
 			"var cbs = [], \n",
 			"	data;\n",
-			"module.exports = function(cb) {\n",
+			"module.exports = function(cb, errorCb) {\n",
 			"	if(cbs) cbs.push(cb);\n",
 			"	else cb(data);\n",
 			"}\n",
@@ -41,7 +42,7 @@ module.exports.pitch = function(remainingRequest) {
 			"	for(var i = 0, l = callbacks.length; i < l; i++) {\n",
 			"		callbacks[i](data);\n",
 			"	}\n",
-			"}" + chunkNameParam + ");"];
+			"}, function(err) { errorCb(err); }" + chunkNameParam + ");"];
 	}
 	return result.join("");
 }
@@ -62,6 +63,6 @@ Output format:
 		for(var i = 0, l = callbacks.length; i < l; i++) {
 			callbacks[i](data);
 		}
-	});
+	}, function(err) { errorCb(err); });
 
 */
