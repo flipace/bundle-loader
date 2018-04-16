@@ -67,7 +67,7 @@ The file is requested when you require the `bundle-loader`. If you want it to re
 **webpack.config.js**
 ```js
 {
-  loader: 'bundle-loader',
+  loader: '@flipace/bundle-loader',
   options: {
     lazy: true
   }
@@ -90,7 +90,7 @@ See [documentation](https://github.com/webpack/loader-utils#interpolatename).
 **webpack.config.js**
 ```js
 {
-  loader: 'bundle-loader',
+  loader: '@flipace/bundle-loader',
   options: {
     name: '[name]'
   }
@@ -123,7 +123,7 @@ module.exports = {
       {
         test: /\.bundle\.js$/,
         use: {
-          loader: 'bundle-loader',
+          loader: '@flipace/bundle-loader',
           options: {
             name: 'my-chunk'
           }
@@ -139,5 +139,3 @@ Normal chunks will show up using the `filename` rule above, and be named accordi
 Chunks from `bundle-loader`, however will load using the `chunkFilename` rule, so the example files will produce `my-chunk.1.js` and `file-2.js` respectively.
 
 You can also use `chunkFilename` to add hash values to the filename, since putting `[hash]` in the bundle options parameter does not work correctly.
-
-<h2 align="center">Maintainers</h2>
